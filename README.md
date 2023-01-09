@@ -10,26 +10,33 @@ Bash's syntax has many extensions lacking in the Bourne shell. Bash can perform 
 
 Brace expansion, also called alternation, is a feature copied from the C shell. It generates a set of alternative combinations. Generated results need not exist as files. The results of each expanded string are not sorted and left to right order is preserved:
 
+```
 $ echo a{p,c,d,b}e <br>
 ape ace ade abe <br>
 $ echo {a,b,c}{d,e,f} <br>
 ad ae af bd be bf cd ce cf <br>
+```
 
 Users should not use brace expansions in portable shell scripts, because the Bourne shell does not produce the same output. <br>
 
+```
 $ # A traditional shell does not produce the same output <br>
 $ /bin/sh -c 'echo a{p,c,d,b}e' <br>
 a{p,c,d,b}e <br>
+```
 
 When brace expansion is combined with wildcards, the braces are expanded first, and then the resulting wildcards are substituted normally. Hence, a listing of JPEG and PNG images in the current directory could be obtained using:
 
+```
 ls *.{jpg,jpeg,png}    # expands to *.jpg *.jpeg *.png - after which, <br>
                        # the wildcards are processed <br>
 echo *.{png,jp{e,}g}   # echo just show the expansions - <br>
                        # and braces in braces are possible. <br>
-                       
+```
+
 In addition to alternation, brace expansion can be used for sequential ranges between two integers or characters separated by double dots. Newer versions of Bash allow a third integer to specify the increment. <br>
 
+```
 $ echo {1..10} <br>
 1 2 3 4 5 6 7 8 9 10 <br>
 $ echo {01..10} <br>
@@ -42,11 +49,14 @@ $ echo {1..10..3} <br>
 1 4 7 10 <br>
 $ echo {a..j..3} <br>
 a d g j <br>
+```
 
 When brace expansion is combined with variable expansion (A.K.A. parameter expansion and parameter substitution) the variable expansion is performed after the brace expansion, which in some cases may necessitate the use of the eval built-in, thus: <br>
 
+```
 $ start=1; end=10 <br>
 $ echo {$start..$end}  # fails to expand due to the evaluation order <br>
 {1..10} <br>
 $ eval echo {$start..$end} # variable expansion occurs then resulting string is evaluated <br>
 1 2 3 4 5 6 7 8 9 10 <br>
+```
